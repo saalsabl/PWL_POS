@@ -6,12 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class,'index']);
 
-Route::get('/', [WelcomeController::class, 'index']);
-
+// user
 Route::group(['prefix' => 'user'], function(){
     Route::get('/', [UserController::class, 'index']);          // menampilkan halaman awal user
     Route::post('/list', [UserController::class, 'list']);      //menampilkan data user dalam bentuk json untuk datatables

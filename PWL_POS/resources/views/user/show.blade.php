@@ -35,7 +35,7 @@
                             <td>********</td>
                         </tr>
                     </table>
-            @endempty
+                @endempty
             <a href="{{ url('user') }}" class="btn tbn-sm btn-default mt-2">Kembali</a>
         </div>
     </div>
