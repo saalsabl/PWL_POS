@@ -110,7 +110,6 @@
 <script>
   function modalAction() {
       console.log("Modal action triggered"); // Debugging untuk memastikan fungsi berjalan
-      // alert("Modal dibuka!"); // Gantilah dengan aksi modal yang sesuai
   }
 </script>
 @endpush
