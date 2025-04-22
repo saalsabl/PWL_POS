@@ -65,9 +65,40 @@
               </li>
             </ul>
           </nav>
+
+
       </div>
+ 
+      <li class="nav-item">
+        <a href="{{ url('logout') }}" class="nav-link" onclick="confirmLogout(event)">
+          <i class="nav-icon fas fa-power-off"></i>
+          <p>Logout</p>
+        </a>
+        <form id="logout-form" action="{{ url('logout') }}" method="GET" style="display: none;">
+        </form>
+      </li>
 
+<script>
+  function confirmLogout(event) {
+    event.preventDefault(); // Menghentikan aksi default logout
 
+    Swal.fire({
+      title: 'Anda yakin ingin logout?',
+      text: "Anda akan keluar dari sesi ini.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Logout!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Jika pengguna mengklik "Ya, Logout", submit form logout
+        document.getElementById('logout-form').submit();
+      }
+    })
+  }
+</script>
 
               {{-- <li class="nav-item">
                 <a href="../layout/fixed-sidebar.html" class="nav-link">
