@@ -59,6 +59,7 @@ Route::group(['prefix' => 'user'], function(){
         Route::get('/import', [BarangController::class, 'import']);
         Route::post('/import_ajax', [BarangController::class, 'import_ajax']);
         Route::get('/export_excel', [BarangController::class, 'export_excel']); 
+        Route::get('/export_pdf', [BarangController::class, 'export_pdf']); 
     });
 
     // kategori
