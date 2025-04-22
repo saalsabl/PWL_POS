@@ -178,47 +178,53 @@ class BarangController extends Controller
     }
 
     public function import_ajax(Request $request)
-    {
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'file_barang' => ['required', 'mimes:xlsx', 'max:1024']
-            ];
+{
+    if ($request->ajax() || $request->wantsJson()) {
+        // Validasi file harus xlsx dan maksimal 1MB
+        $rules = [
+            'file_barang' => ['required', 'mimes:xlsx', 'max:1024']
+        ];
 
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
-                ]);
-            }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi Gagal',
+                'msgField' => $validator->errors()
+            ]);
+        }
 
-            $file = $request->file('file_barang');
+        // Ambil file dari request
+        $file = $request->file('file_barang');
 
-            $reader = IOFactory::createReader('Xlsx');
-            $reader->setReadDataOnly(true);
-            $spreadsheet = $reader->load($file->getRealPath());
-            $sheet = $spreadsheet->getActiveSheet();
-            $data = $sheet->toArray(null, false, true, true);
+        // Load file excel
+        $reader = IOFactory::createReader('Xlsx');
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($file->getRealPath());
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = $sheet->toArray(null, false, true, true);
 
-            $insert = [];
-            if (count($data) > 1) {
-                foreach ($data as $baris => $value) {
-                    if ($baris > 1) {
-                        $insert[] = [
-                            'kategori_id' => $value['A'],
-                            'barang_kode' => $value['B'],
-                            'barang_nama' => $value['C'],
-                            'harga_beli' => $value['D'],
-                            'harga_jual' => $value['E'],
-                            'created_at' => now(),
-                        ];
-                    }
+        $insert = [];
+
+        // Lewati baris pertama (header)
+        if (count($data) > 1) {
+            foreach ($data as $baris => $value) {
+                if ($baris > 1) {
+                    $insert[] = [
+                        'kategori_id' => $value['A'],
+                        'barang_kode' => $value['B'],
+                        'barang_nama' => $value['C'],
+                        'harga_beli'  => $value['D'],
+                        'harga_jual'  => $value['E'],
+                        'created_at'  => now(),
+                    ];
                 }
             }
 
             if (count($insert) > 0) {
+                // Insert ke database, jika duplikat maka diabaikan
                 BarangModel::insertOrIgnore($insert);
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil diimport'
@@ -229,10 +235,18 @@ class BarangController extends Controller
                     'message' => 'Tidak ada data yang diimport'
                 ]);
             }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'File tidak berisi data yang valid'
+            ]);
         }
-
-        return redirect('/');
     }
+
+    // Fallback jika bukan request AJAX
+    return redirect('/');
+}
+
     public function export_excel()
     {
         // ambil data barang yang akan di export
@@ -289,7 +303,9 @@ class BarangController extends Controller
     } //end function export_excel
     
     public function export_pdf()
-    {
+    { 
+        set_time_limit(120); // waktu dalam detik
+
         $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
                     ->orderBy('kategori_id')
                     ->orderBy('barang_kode')

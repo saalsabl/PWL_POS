@@ -22,7 +22,12 @@
             <p>Dashboard</p>
           </a>
         </li>
-
+        <li class="nav-item">
+          <a href="{{ url('/profil') }}" class="nav-link {{ ($activeMenu == 'profil')? 'active' : ''}}">
+              <i class="nav-icon far fa-address-card"></i>
+              <p>Profile</p>
+          </a>
+      </li>
               <li class="nav-header">Data Pengguna</li>
               <li class="nav-item">
                 <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} ">
@@ -50,6 +55,12 @@
                   <p>Data Barang</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('/supplier') }}" class="nav-link {{ $activeMenu == 'supplier' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-cubes"></i>
+                    <p>Supplier</p>
+                </a>
+            </li>
               <li class="nav-header">Data Transaksi</li>
               <li class="nav-item">
                 <a href="{{ url('/stok')}}" class="nav-link {{ ($activeMenu == 'stok') ? 'active' : '' }}" class="nav-link">
@@ -58,7 +69,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/barang')}}" class="nav-link {{ ($activeMenu == 'barang') ? 'active' : '' }}" class="nav-link">
+                <a href="{{ url('/transaksi')}}" class="nav-link {{ ($activeMenu == 'transaksi') ? 'active' : '' }}" class="nav-link">
                   <i class="nav-icon fas fa-cash-register"></i>
                   <p>Transaksi Penjualan</p>
                 </a>

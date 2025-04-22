@@ -35,7 +35,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="card card-outline card-primary">
-            <div class="card-header text-center"><a href="{{ url('/') }}" class="h1"><b>Toserba</b></a></div>
+            <div class="card-header text-center"><a href="{{ url('/') }}" class="h1"><b>AdminLTE</b></a></div>
             <div class="card-body">
                 <p class="login-box-msg">Registrasi Pengguna Baru</p>
                 <form method="POST" action="{{ url('register') }}" id="form-register">

@@ -7,9 +7,9 @@
         <div class="card-tools">
             <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-info">Import Barang</button>
             {{-- <a href="{{ url('/barang/create') }}" class="btn btn-primary">Tambah Data</a> --}}
-            <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary"><i class="fa fa-file- excel"></i> Export Barang</a>
-            <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file- pdf"></i> Export Barang</a>
-            <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
+            <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary"><i class="fa fa-file-excel"></i> Export Barang</a>
+            <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning"><i class="fa fa-file-pdf"></i> Export Barang</a>
+            <button onclick="modalAction('{{ url('/kategori/create_ajax') }}')" class="btn btn-sm btn- success mt-1">Tambah Kategori (Ajax)</button>
         </div>
     </div>
     <div class="card-body">
@@ -85,7 +85,7 @@
             },
             columns: [
                 {
-                    data: "No_Urut",
+                    data: "DT_RowIndex",
                     className: "text-center",
                     width: "5%",
                     orderable: false,
@@ -99,7 +99,7 @@
                 },
                 {
                     data: "barang_nama",
-                    width: "37%",
+                    width: "20%",
                     orderable: true,
                     searchable: true
                 },
@@ -130,7 +130,7 @@
                 {
                     data: "aksi",
                     className: "text-center",
-                    width: "14%",
+                    width: "20%",
                     orderable: false,
                     searchable: false
                 }
