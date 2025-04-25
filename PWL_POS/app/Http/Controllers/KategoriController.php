@@ -52,6 +52,11 @@ class KategoriController extends Controller
             ->make(true);
     }
 
+    public function kategori_ajax(string $id){
+        $kategori = KategoriModel::find($id);
+        return view('kategori.show_ajax', ['user' => $kategori]);
+    }
+
 
     public function show(string $id)
     {

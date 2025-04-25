@@ -1,64 +1,73 @@
-<form action="{{ url('/barang/import_ajax') }}" method="POST" id="form-import" enctype="multipart/form-data">
+@empty($kategori)
+<div id="modal-master" class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-danger">
+                <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
+                Data yang anda cari tidak ditemukan
+            </div>
+            <a href="{{ url('/kategori') }}" class="btn btn-warning">Kembali</a>
+        </div>
+    </div>
+</div>
+@else
+<form id="form-delete">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Import Data Barang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Kategori</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Download Template</label>
-                    <a href="{{ asset('template_barang.xlsx') }}" class="btn btn-info btn-sm" download>
-                        <i class="fa fa-file-excel"></i> Download
-                    </a>
-                    <small id="error-kategori_id" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Pilih File</label>
-                    <input type="file" name="file_barang" id="file_barang" class="form-control" required>
-                    <small id="error-file_barang" class="error-text form-text text-danger"></small>
-                </div>
+                <table class="table table-sm table-bordered table-striped">
+                    <tr>
+                        <th class="text-right col-3">ID</th>
+                        <td class="col-9">{{ $kategori->kategori_id }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right col-3">Kode Kategori</th>
+                        <td class="col-9">{{ $kategori->kategori_kode }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-right col-3">Nama Kategori</th>
+                        <td class="col-9">{{ $kategori->kategori_kode }}</td>
+                    </tr>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                <button type="submit" class="btn btn-primary">Upload</button>
             </div>
         </div>
     </div>
 </form>
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
-
 <script>
     $(document).ready(function() {
-        $("#form-import").validate({
-            rules: {
-                file_barang: {
-                    required: true,
-                    extension: "xlsx"
-                }
-            },
+        $("#form-delete").validate({
+            rules: {},
             submitHandler: function(form) {
-                var formData = new FormData(form); // Jadikan form ke FormData untuk menghandle file
-                
                 $.ajax({
                     url: form.action,
                     type: form.method,
-                    data: formData, // Data yang dikirim berupa FormData
-                    processData: false, // setting processData dan contentType ke false, untuk menghandle file
-                    contentType: false,
+                    data: $(form).serialize(),
                     success: function(response) {
-                        if(response.status){ // jika sukses
+                        if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            tableBarang.ajax.reload(); // reload datatable
-                        } else { // jika error
+                            dataUser.ajax.reload();
+                        } else {
                             $('.error-text').text('');
                             $.each(response.msgField, function(prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
@@ -78,12 +87,13 @@
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function(element) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function(element) {
                 $(element).removeClass('is-invalid');
             }
         });
     });
 </script>
+@endempty
